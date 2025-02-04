@@ -50,6 +50,7 @@ public class EmsServerApplication {
     public String sendOtp(@RequestBody String user) {
         JsonObject jsObj = gson.fromJson(user, JsonObject.class);
         String email = jsObj.get("email").getAsString();
+        System.out.println(email);
         String otp = genOtp();
         String msg = emailService.sendOtp(email, otp);
         otpStore.put(email, otp);
@@ -74,7 +75,6 @@ public class EmsServerApplication {
         JsonObject jsObj = gson.fromJson(entity, JsonObject.class);
         String email = jsObj.get("email").getAsString();
         String password = jsObj.get("password").getAsString();
-
         UserModel existingUser = userRepo.findByEmail(email);
         if (existingUser != null) {
             return ResponseEntity.ok("User already exists");
@@ -85,6 +85,9 @@ public class EmsServerApplication {
         userRepo.save(user);
         return ResponseEntity.ok(user);
     }
+
+    //JWT Login 
+
 
     // @PostMapping("/api/login")
     // public ResponseEntity<?> postMethodName(@RequestBody String user) {

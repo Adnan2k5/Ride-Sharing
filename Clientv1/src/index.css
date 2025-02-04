@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  :root {
+    --radius: 0.5rem
+  }
+}
+
+@font-face {
+  font-family: 'Playwrite';
+  src: url('./assets/Fonts/PlaywriteIN-VariableFont_wght.ttf');
+}
+@font-face {
+  font-family: 'Qwigley';
+  src: url('./assets/Fonts/Qwigley-Regular.ttf');
+}
+@font-face {
+  font-family: 'DMSans';
+  src: url(./assets/Fonts/DMSans-Italic-VariableFont_opsz\,wght.ttf);
+}

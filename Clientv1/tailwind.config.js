@@ -12,7 +12,13 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
-  		colors: {}
+  		colors: {},
+      fontFamily: {
+        playwrite : ['Playwrite', 'sans-serif'],
+        qwigley : ['Qwigley', 'sans-serif'],
+        dmsans : ['DMSans', 'sans-serif']
+
+      }
   	}
   },
   plugins: [require("tailwindcss-animate")],
