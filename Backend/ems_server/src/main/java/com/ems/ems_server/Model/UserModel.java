@@ -2,13 +2,15 @@ package com.ems.ems_server.Model;
 
 import org.springframework.data.annotation.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties({"password"})
 public class UserModel {
     @Id
     private String id;
     private String email;
     private String password;
-    private String first_name;
-    private String last_name;
+    private String name;
+    private String role;
 
 
     public String getId() { return id; }
@@ -17,7 +19,8 @@ public class UserModel {
     public void setEmail(String email) { this.email = email; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-    public String getName() { return first_name + " " + last_name; }
-    public void setFirst_name(String name) { this.first_name = name; }
-    public void setLast_name(String name) { this.last_name = name; }
+    public String getName() { return name; }
+    public void setName(String name) {  this.name = name; }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import LoginPage from './LoginElement'
+import LoginPage from '../Pages/RegisterPage'
 
 export const Navbar = () => {
   return (
