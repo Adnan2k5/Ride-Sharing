@@ -3,11 +3,12 @@ import axiosClient from "../AxiosClient/Client";
 
 export const verifyEmail = async (email) => {
     try {
+        console.log(email)
         const res = await axiosClient.post('/api/otp-verification', email);
         if(res.status === 200){
             return true;
         }
-        else{
+        else if(res.status === 409){
             return false;
         } 
     }
