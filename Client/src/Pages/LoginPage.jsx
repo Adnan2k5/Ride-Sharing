@@ -14,12 +14,12 @@ export const LoginPage = () => {
   const LoginUser = async(data) =>{
     const res = await userLogin(data, dispatch);
     if(res){
-      navigate('/welcome')
+      navigate('/')
     }
   }
   useEffect(()=>{
     if(!user.loading && user.user != null){
-      navigate('/welcome')
+      navigate('/')
     }
   },[user])
   return (

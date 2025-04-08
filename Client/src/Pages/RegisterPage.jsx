@@ -67,7 +67,7 @@ export default function RegisterPage() {
     const res =  userRegister(data, dispatch);
     if(res){
       console.log("User Registered Successfully");
-      Navigate("/welcome");
+      Navigate("/");
     }
   }
   return (
