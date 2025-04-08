@@ -24,7 +24,7 @@ public class JwtUtils {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET_KEY))
                     .build();
             DecodedJWT decodedJWT = verifier.verify(token);
-            return decodedJWT.getSubject();
+            return decodedJWT.getSubject(); 
         } catch (Exception e) {
             return null; 
         }
