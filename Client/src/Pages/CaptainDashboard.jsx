@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form"
 import { useSelector } from "react-redux"
 import { motion } from "framer-motion"
 import { toast } from "sonner"
-import { AddRide, GetRides, UpdateRide } from "../Api/Ride_Api"
-import { MapPin, Clock, Calendar, Plus, Pencil, DollarSign, BarChart3, Car } from "lucide-react"
+import { AddRide, GetRides, RideDelelte, UpdateRide } from "../Api/Ride_Api"
+import { MapPin, Clock, Calendar, Plus, Pencil, DollarSign, BarChart3, Car, Trash } from "lucide-react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table"
 import {
   Dialog,
@@ -68,7 +68,7 @@ export const CaptainDashboard = () => {
       try {
         const res = await GetRides(captain?.id)
         if (res) {
-          setRides(res)
+            setRides(res.sort((a, b) => new Date(b.date) - new Date(a.date)))
         } else {
           setRides([])
         }
@@ -160,6 +160,20 @@ export const CaptainDashboard = () => {
       )
     }
   }
+
+  const deleteRide = async (id) => {
+    try{
+      const res = await RideDelelte(id);
+      if(res){
+        toast.success("Ride deleted successfully")
+        getRides()
+      }
+    }
+    catch (error) {
+      toast.error("Failed to delete ride")
+    }
+  }
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -293,7 +307,7 @@ export const CaptainDashboard = () => {
                             <TableCell>
                               <StatusBadge status={ride.status} />
                             </TableCell>
-                            <TableCell>
+                            <TableCell className="flex gap-5">
                               <Button
                                 variant="outline"
                                 size="sm"
@@ -302,6 +316,19 @@ export const CaptainDashboard = () => {
                               >
                                 <Pencil className="h-3 w-3" />
                                 Edit
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                className="flex items-center gap-1"
+                                onClick={() => {
+                                  if (confirm("Are you sure you want to delete this ride?")) {
+                                    deleteRide(ride.key);
+                                  }
+                                }}
+                              >
+                                <Trash className="h-3 w-3" />
+                                Delete
                               </Button>
                             </TableCell>
                           </TableRow>

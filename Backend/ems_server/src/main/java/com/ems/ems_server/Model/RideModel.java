@@ -20,8 +20,8 @@ public class RideModel {
 
     public RideModel(JsonObject rideJson) {
         this.captainId = rideJson.get("captain_id").getAsString();
-        this.source = rideJson.get("from").getAsString();
-        this.destination = rideJson.get("to").getAsString();
+        this.source = rideJson.get("source").getAsString();
+        this.destination = rideJson.get("destination").getAsString();
         this.date = rideJson.get("date").getAsString();
         this.time = rideJson.get("time").getAsString();
         this.price = rideJson.get("price").getAsString();

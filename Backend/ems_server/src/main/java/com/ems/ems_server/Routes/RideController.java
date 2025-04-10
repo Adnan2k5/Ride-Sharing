@@ -51,20 +51,21 @@ public class RideController {
         RideModel savedRide = rideRepository.save(rideModel);
         BookedRide bookedRide = new BookedRide(rideJson);
         bookedRideRepo.save(bookedRide);
-
-        return ResponseEntity.ok(savedRide);
+        return ResponseEntity.ok(bookedRide);
     }
 
     @PostMapping("/add")
     public ResponseEntity<?> addRide(@RequestBody String entity) {
         try{
             JsonObject rideJson = gson.fromJson(entity, JsonObject.class);
+            System.out.println(rideJson);
             RideModel rideModel = new RideModel(rideJson);
+            System.out.println(rideModel);
             rideRepository.save(rideModel);
             return ResponseEntity.status(200).body("Ride added successfully");
         }
         catch(Exception e){
-            return ResponseEntity.status(400).body("Error adding ride");
+            return ResponseEntity.status(400).body(e);
         }
     }
 
@@ -97,5 +98,15 @@ public class RideController {
             return ResponseEntity.ok().body("No rides found");
         }
         return ResponseEntity.ok(rides);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteRide(@PathVariable String id) {
+        Optional<RideModel> ride = rideRepository.findById(id);
+        if(ride.isPresent()){
+            rideRepository.delete(ride.get());
+            return ResponseEntity.status(200).body("Ride deleted successfully");
+        }
+        return ResponseEntity.status(404).body("Ride not found");
     }
 }
