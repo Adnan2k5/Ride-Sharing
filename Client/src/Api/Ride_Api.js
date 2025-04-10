@@ -1,6 +1,7 @@
 import axiosClient from "../AxiosClient/Client"
 export const AddRide = async (data) => {
     const res = await axiosClient.post('/api/rides/add', data);
+    console.log(res);
     if(res.status === 200){
         return true;
     }
@@ -30,4 +31,11 @@ export const bookRide = async (data) => {
     console.log(res)
      
 }   
+
+export const RideDelelte = async (id) => {
+    const res = await axiosClient.delete(`/api/rides/${id}`)
+    if(res.status === 200) {
+        return true;
+    }
+}
 

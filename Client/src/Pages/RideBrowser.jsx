@@ -20,6 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu"
+import { useNavigate } from "react-router-dom"
 
 export const RideBrowser = () => {
   const time = new Date().getHours()
@@ -27,7 +28,7 @@ export const RideBrowser = () => {
   const [greet, setGreet] = useState("Good Morning")
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (time > 12 && time < 18) {
       setGreet("Good Afternoon")
@@ -43,7 +44,8 @@ export const RideBrowser = () => {
     try {
       const res = await fetchRides()
       if (res) {
-        setData(res)
+        console.log(res)
+        setData(res.filter((ride) => ride.status === "active"))
       }
     } catch (error) {
       console.error("Error fetching rides:", error)
@@ -80,14 +82,9 @@ export const RideBrowser = () => {
   const RideBook = async (ride) => {
     try {
       const response = await bookRide({ ...ride, userId: user.id })
-      if (response) {
-        toast.success("Ride Booked Successfully!", {
-          description: `Your ride from ${ride.from} to ${ride.to} has been booked.`,
-          action: {
-            label: "View",
-            onClick: () => console.log("View ride details"),
-          },
-        })
+      console.log(response)
+      if (response.status === 200) {
+        navigate(`/confirmation/${response.id}`)
       }
     } catch (error) {
       toast.error("Booking Failed", {
@@ -187,7 +184,7 @@ export const RideBrowser = () => {
                 <h2 className="text-xl font-semibold text-slate-700">Available Rides</h2>
                 <Badge variant="outline" className="bg-blue-50">
                   <Sparkles className="h-3 w-3 mr-1 text-blue-500" />
-                  Web3 Rides
+                   Rides
                 </Badge>
               </div>
 
@@ -300,16 +297,10 @@ export const RideBrowser = () => {
                       <h3 className="text-2xl font-bold">$3,000</h3>
                     </div>
                   </div>
-
                   <Separator className="my-4 bg-white/20" />
-
                   <div className="flex justify-between items-center">
-                    <div>
-                      <p className="text-sm opacity-80">Crypto Balance</p>
-                      <p className="font-medium">0.45 ETH</p>
-                    </div>
                     <Button variant="secondary" size="sm" className="bg-white/20 hover:bg-white/30 backdrop-blur-sm">
-                      Top Up
+                      Add Money
                     </Button>
                   </div>
                 </CardContent>

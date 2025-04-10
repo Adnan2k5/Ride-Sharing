@@ -23,11 +23,10 @@ function App() {
           <Route path='/login' element={<LoginPage/>}/>
           <Route path='/register' element={<RegisterPage/>}/>
           <Route path='/401' element={<Error401/>}/>
-          <Route path='/browse' element={<AuthProvider><RideBrowser/></AuthProvider>}/>
-          {/* <Route path='/browse' element={<RideBrowser/>}/> */}
-          <Route path='/' element={<ProtectedRoute>
-            <Welcome/>
-          </ProtectedRoute>}/>
+          <Route path='/welcome' element={<Welcome/>}/>
+          <Route path='/' element={<AuthProvider>
+            <RideBrowser/>
+          </AuthProvider>}/>
           {/* <Route path='/captain' element={<ProtectedRoute><CaptainDashboard/></ProtectedRoute>}/> */}
           <Route path='/captain' element={<CaptainDashboard/>}/>
         </Routes>
