@@ -14,6 +14,9 @@ import com.google.gson.JsonObject;
 import com.ems.ems_server.Model.BookedRide;
 import com.ems.ems_server.Model.RideModel;
 import com.ems.ems_server.WebSocket.RideBooking;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -44,6 +47,7 @@ public class RideController {
         }
         RideModel rideModel = optionalRideModel.get();
         rideModel.setStatus("booked");
+        rideModel.setBookedBy(rideJson.get("userId").getAsString());
         RideModel savedRide = rideRepository.save(rideModel);
         BookedRide bookedRide = new BookedRide(rideJson);
         bookedRideRepo.save(bookedRide);
@@ -89,12 +93,30 @@ public class RideController {
 
     @GetMapping("/fetchRides")
     public ResponseEntity<?> fetchRides() {
-        List<RideModel> rides = rideRepository.findByStatusNot("booked");
+        List<RideModel> rides = rideRepository.findByStatus("active");
         if(rides.isEmpty()){
             return ResponseEntity.ok().body("No rides found");
         }
         return ResponseEntity.ok(rides);
     }
+    @GetMapping("/fetchBookings")
+    public ResponseEntity<?> fetchBooking() {
+        List<RideModel> rides = rideRepository.findByStatus("booked");
+        if(rides.isEmpty()){
+            return ResponseEntity.ok().body("No rides found");
+        }
+        return ResponseEntity.ok(rides);
+    }
+
+    @PostMapping("/fetchBookings/{id}")
+    public ResponseEntity<?> fetchBookings(@PathVariable String id) {
+        List<BookedRide> bookedRides = bookedRideRepo.findAll();
+        if(bookedRides.isEmpty()){
+            return ResponseEntity.ok().body("No rides found");
+        }
+        return ResponseEntity.ok(bookedRides);
+    }
+    
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteRide(@PathVariable String id) {
