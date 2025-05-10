@@ -1,3 +1,4 @@
+
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import RegisterPage from './Pages/RegisterPage'
 import { LoginPage } from './Pages/LoginPage'
@@ -11,11 +12,13 @@ import { RideBrowser } from './Pages/RideBrowser'
 import { CaptainDashboard } from './Pages/CaptainDashboard'
 import { Toaster } from 'sonner'
 import { ConfirmationPage } from './Pages/ConfirmationPage'
+import { UserDashboard } from "./Pages/UserDashboard"
+
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   useEffect(() => {
-    getUser(dispatch);
+    getUser(dispatch)
   }, [dispatch])
 
   return (
@@ -33,6 +36,12 @@ function App() {
           {/* <Route path='/captain' element={<ProtectedRoute><CaptainDashboard/></ProtectedRoute>}/> */}
           <Route path='/captain' element={<ProtectedRoute><CaptainDashboard /></ProtectedRoute>} />
           <Route path='/confirmation' element={<ConfirmationPage />} />
+          <Route
+            path="/dashboard"
+            element={
+                <UserDashboard />
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>
