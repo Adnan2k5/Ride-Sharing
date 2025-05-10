@@ -52,14 +52,14 @@ export const CaptainDashboard = () => {
   const formattedRides =
     rides !== "No rides found"
       ? rides?.map((ride) => ({
-          key: ride.id,
-          source: ride.source,
-          destination: ride.destination,
-          date: ride.date,
-          time: ride.time,
-          price: ride.price,
-          status: ride.status,
-        }))
+        key: ride.id,
+        source: ride.source,
+        destination: ride.destination,
+        date: ride.date,
+        time: ride.time,
+        price: ride.price,
+        status: ride.status,
+      }))
       : []
 
   const getRides = async () => {
@@ -68,7 +68,7 @@ export const CaptainDashboard = () => {
       try {
         const res = await GetRides(captain?.id)
         if (res) {
-            setRides(res.sort((a, b) => new Date(b.date) - new Date(a.date)))
+          setRides(res.sort((a, b) => new Date(b.date) - new Date(a.date)))
         } else {
           setRides([])
         }
@@ -162,9 +162,9 @@ export const CaptainDashboard = () => {
   }
 
   const deleteRide = async (id) => {
-    try{
+    try {
       const res = await RideDelelte(id);
-      if(res){
+      if (res) {
         toast.success("Ride deleted successfully")
         getRides()
       }
@@ -173,7 +173,6 @@ export const CaptainDashboard = () => {
       toast.error("Failed to delete ride")
     }
   }
-  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -203,7 +202,6 @@ export const CaptainDashboard = () => {
       </div>
 
       <div className="container mx-auto py-8">
-        {/* Analytics Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -218,7 +216,7 @@ export const CaptainDashboard = () => {
                 </div>
                 <div>
                   <p className="text-sm opacity-80">Total Revenue</p>
-                  <h3 className="text-2xl font-bold">${profit.toFixed(2)}</h3>
+                  <h3 className="text-2xl font-bold">₹{profit.toFixed(2)}</h3>
                 </div>
               </div>
             </CardContent>
@@ -257,7 +255,6 @@ export const CaptainDashboard = () => {
           </Card>
         </motion.div>
 
-        {/* Main Content */}
         <Tabs defaultValue="rides" className="w-full">
           <TabsList className="mb-6">
             <TabsTrigger value="rides">Manage Rides</TabsTrigger>
@@ -303,7 +300,7 @@ export const CaptainDashboard = () => {
                             <TableCell className="uppercase">{ride.destination}</TableCell>
                             <TableCell>{ride.date}</TableCell>
                             <TableCell>{ride.time}</TableCell>
-                            <TableCell>${ride.price}</TableCell>
+                            <TableCell>₹{ride.price}</TableCell>
                             <TableCell>
                               <StatusBadge status={ride.status} />
                             </TableCell>
@@ -419,7 +416,7 @@ export const CaptainDashboard = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="price">Price ($)</Label>
+                      <Label htmlFor="price">Price (₹)</Label>
                       <div className="relative">
                         <DollarSign className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                         <Input
@@ -486,7 +483,7 @@ export const CaptainDashboard = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="edit-price">Price ($)</Label>
+              <Label htmlFor="edit-price">Price (₹)</Label>
               <Input id="edit-price" type="number" step="0.01" {...register("price", { required: true })} />
             </div>
 

@@ -43,9 +43,11 @@ export const RideBrowser = () => {
     setIsLoading(true)
     try {
       const res = await fetchRides()
-      if (res) {
-        console.log(res)
+      if (res !== "No rides found") {
         setData(res.filter((ride) => ride.status === "active"))
+      }
+      else {
+        setData(null)
       }
     } catch (error) {
       console.error("Error fetching rides:", error)
@@ -64,19 +66,19 @@ export const RideBrowser = () => {
   const rides =
     data !== "No rides found"
       ? data?.map((ride) => ({
-          key: ride.id,
-          from: ride.source,
-          to: ride.destination,
-          time: ride.time,
-          price: ride.price,
-          date: ride.date,
-          captain: {
-            name: ride.captainName,
-            image: "/placeholder.svg", // Using placeholder for now
-            rating: "4.5",
-            id: ride.captainId,
-          },
-        }))
+        key: ride.id,
+        from: ride.source,
+        to: ride.destination,
+        time: ride.time,
+        price: ride.price,
+        date: ride.date,
+        captain: {
+          name: ride.captainName,
+          image: "/placeholder.svg", // Using placeholder for now
+          rating: "4.5",
+          id: ride.captainId,
+        },
+      }))
       : []
 
   const RideBook = async (ride) => {
@@ -84,6 +86,7 @@ export const RideBrowser = () => {
       const response = await bookRide({ ...ride, userId: user.id })
       console.log(response)
       if (response.status === 200) {
+        toast.success("Ride Booked Successfully");
         navigate(`/confirmation/${response.id}`)
       }
     } catch (error) {
@@ -109,7 +112,7 @@ export const RideBrowser = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 px-5 md:px-0">
       <div className="backdrop-blur-sm border-b border-slate-200 px-4 md:px-6 py-4">
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
           <motion.div
@@ -184,7 +187,7 @@ export const RideBrowser = () => {
                 <h2 className="text-xl font-semibold text-slate-700">Available Rides</h2>
                 <Badge variant="outline" className="bg-blue-50">
                   <Sparkles className="h-3 w-3 mr-1 text-blue-500" />
-                   Rides
+                  Rides
                 </Badge>
               </div>
 
@@ -231,7 +234,7 @@ export const RideBrowser = () => {
                                   <span>{ride.time}</span>
                                 </div>
                                 <div className="flex items-center gap-1 font-semibold text-green-600">
-                                  <span>${ride.price}</span>
+                                  <span>₹{ride.price}</span>
                                   <Badge variant="outline" className="ml-1 bg-green-50 text-green-600 border-green-200">
                                     Best Price
                                   </Badge>
@@ -294,7 +297,7 @@ export const RideBrowser = () => {
                     </div>
                     <div>
                       <p className="text-sm opacity-80">Account Balance</p>
-                      <h3 className="text-2xl font-bold">$3,000</h3>
+                      <h3 className="text-2xl font-bold">₹3,000</h3>
                     </div>
                   </div>
                   <Separator className="my-4 bg-white/20" />
@@ -335,7 +338,7 @@ export const RideBrowser = () => {
                                     <p className="text-xs text-slate-400">{ride.date || "Today"}</p>
                                   </div>
                                 </div>
-                                <span className="font-medium text-green-600">${ride.price}</span>
+                                <span className="font-medium text-green-600">₹{ride.price}</span>
                               </div>
                             </CardContent>
                           </Card>
