@@ -14,7 +14,6 @@ import com.google.gson.JsonObject;
 import com.ems.ems_server.Model.BookedRide;
 import com.ems.ems_server.Model.RideModel;
 import com.ems.ems_server.WebSocket.RideBooking;
-import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
@@ -33,9 +32,6 @@ public class RideController {
     public RideController(RideBooking rideBooking) {
         this.RideBookingHandler = rideBooking;
     }
-
-    
-
     private final Gson gson = new Gson();
 
     @PostMapping("/book")
@@ -93,7 +89,7 @@ public class RideController {
 
     @GetMapping("/fetchRides")
     public ResponseEntity<?> fetchRides() {
-        List<RideModel> rides = rideRepository.findAll();
+        List<RideModel> rides = rideRepository.findByStatusNot("booked");
         if(rides.isEmpty()){
             return ResponseEntity.ok().body("No rides found");
         }

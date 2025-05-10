@@ -9,5 +9,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface Riderepository extends MongoRepository<RideModel, String> {
     List<RideModel> findByCaptainId(String captain_id);
-    List<RideModel> findByStatus(String status);
+    List<RideModel> findByStatusNot(String status);
 }
