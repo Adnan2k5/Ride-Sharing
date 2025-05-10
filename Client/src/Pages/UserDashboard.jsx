@@ -1,12 +1,10 @@
-"use client"
-
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import { toast } from "sonner"
 import { CreditCard, Clock, CalendarClock, ChevronRight, MapPin, MoveRight, Car, History, Calendar } from "lucide-react"
-import { fetchRides } from "../Api/Ride_Api"
+import { fetchBookings, fetchRides } from "../Api/Ride_Api"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "../Components/ui/card"
 import { Button } from "../components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
@@ -15,54 +13,63 @@ import { Separator } from "../components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
 
 export const UserDashboard = () => {
-  const user = useSelector((state) => state.user.user)
-  const navigate = useNavigate()
+  const state = useSelector((state) => state.user)
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true)
   const [pastRides, setPastRides] = useState([])
-  const [futureRides, setFutureRides] = useState([])
+  const [futureRides, setFutureRides] = useState([]);
+  const [user, setuser] = useState();
   const [balance, setBalance] = useState(3000) // Mock balance - would come from API in real app
 
-//   useEffect(() => {
-//     if (!user) {
-//       navigate("/login")
-//       return
-//     }
+  useEffect(() => {
+    if (state.loading === false && state.user == null) {
+      navigate("/login")
+      return
+    }
+    setuser(state.user)
+    loadRides()
+  }, [state, navigate])
 
-//     loadRides()
-//   }, [user, navigate])
+
+
+
 
   const loadRides = async () => {
     setIsLoading(true)
-    try {
-      const allRides = await fetchRides()
+    if (state.user !== null) {
+      try {
+        const allRides = await fetchBookings()
 
-      // Filter rides for this user
-      const userRides = Array.isArray(allRides)
-        ? allRides.filter((ride) => ride.userId === user?.id || ride.bookedBy === user?.id)
-        : []
 
-      const currentDate = new Date()
+        // Filter rides for this user
+        const userRides = Array.isArray(allRides)
+          ? allRides.filter((ride) => ride.bookedBy === state.user?.id)
+          : []
 
-      // Split into past and future rides
-      const past = []
-      const future = []
+        console.log(userRides)
 
-      userRides.forEach((ride) => {
-        const rideDate = new Date(ride.date)
-        if (rideDate < currentDate) {
-          past.push(ride)
-        } else {
-          future.push(ride)
-        }
-      })
+        const currentDate = new Date().getTime()
 
-      setPastRides(past)
-      setFutureRides(future)
-    } catch (error) {
-      console.error("Error fetching rides:", error)
-      toast.error("Failed to load your rides")
-    } finally {
-      setIsLoading(false)
+        // Split into past and future rides
+        const past = []
+        const future = []
+
+        userRides.forEach((ride) => {
+          const rideDate = new Date(ride.date).getTime()
+          if (rideDate < currentDate) {
+            past.push(ride)
+          } else {
+            future.push(ride)
+          }
+        })
+        setPastRides(past)
+        setFutureRides(future)
+      } catch (error) {
+        console.error("Error fetching rides:", error)
+        toast.error("Failed to load your rides")
+      } finally {
+        setIsLoading(false)
+      }
     }
   }
 

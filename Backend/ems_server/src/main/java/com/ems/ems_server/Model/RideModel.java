@@ -15,6 +15,7 @@ public class RideModel {
     private String time;
     private String status;
     private String price;
+    private String bookedBy;
 
     public RideModel() {}
 
@@ -26,6 +27,7 @@ public class RideModel {
         this.time = rideJson.get("time").getAsString();
         this.price = rideJson.get("price").getAsString();
         this.captainName = rideJson.get("captainName").getAsString();
+        this.bookedBy = "";
         this.status = "active";
     }
     public RideModel(String captain_id, String captainName, String source2, String destination2, String date2, String time2, String price2,
@@ -57,6 +59,8 @@ public class RideModel {
     public void setPrice(String price) { this.price = price; }
     public void setCaptainName(String captainName) { this.captainName = captainName; }
     public String getCaptainName() { return captainName; }
+    public String getBookedBy() { return bookedBy; }
+    public void setBookedBy(String bookedBy) { this.bookedBy = bookedBy; }
     public String getDetails() {
         return String.format(
             "Captain ID: %s\n Captain Name: %s\nFrom: %s\nTo: %s\nDate: %s\nTime: %s\nStatus: %s\nPrice: %s",
@@ -82,6 +86,9 @@ public class RideModel {
         }
         if (rideJson.has("price") && !rideJson.get("price").isJsonNull()) {
             this.price = rideJson.get("price").getAsString();
+        }
+        if(rideJson.has("bookedBy") && !rideJson.get("bookedBy").isJsonNull()) {
+            this.bookedBy = rideJson.get("bookedBy").getAsString();
         }
     }
 }

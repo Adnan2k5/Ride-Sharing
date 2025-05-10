@@ -20,7 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export const RideBrowser = () => {
   const time = new Date().getHours()
@@ -87,7 +87,6 @@ export const RideBrowser = () => {
       console.log(response)
       if (response.status === 200) {
         toast.success("Ride Booked Successfully");
-        navigate(`/confirmation/${response.id}`)
       }
     } catch (error) {
       toast.error("Booking Failed", {
@@ -145,7 +144,7 @@ export const RideBrowser = () => {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem><Link to="/dashboard">Profile</Link></DropdownMenuItem>
                 <DropdownMenuItem>Settings</DropdownMenuItem>
                 <DropdownMenuItem>Logout</DropdownMenuItem>
               </DropdownMenuContent>
@@ -350,10 +349,12 @@ export const RideBrowser = () => {
                   </motion.div>
                 </CardContent>
                 <CardFooter className="pt-0">
-                  <Button variant="ghost" className="w-full justify-between">
-                    View All Rides
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
+                  <Link to="/dashboard">
+                    <Button variant="ghost" className="w-full justify-between">
+                      View All Rides
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
                 </CardFooter>
               </Card>
             </motion.div>
