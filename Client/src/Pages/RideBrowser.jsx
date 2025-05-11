@@ -8,10 +8,10 @@ import { bookRide, fetchRides } from "../Api/Ride_Api"
 import { toast } from "sonner"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "../Components/ui/card"
 import { Button } from "../Components/ui/button"
-import { Input } from "../components/ui/input"
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
-import { Badge } from "../components/ui/badge"
-import { Separator } from "../components/ui/separator"
+import { Input } from "../Components/ui/input"
+import { Avatar, AvatarFallback, AvatarImage } from "../Components/ui/avatar"
+import { Badge } from "../Components/ui/badge"
+import { Separator } from "../Components/ui/separator"
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -7,10 +7,10 @@ import { CreditCard, Clock, CalendarClock, ChevronRight, MapPin, MoveRight, Car,
 import { fetchBookings } from "../Api/Ride_Api"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "../Components/ui/card"
 import { Button } from "../Components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
-import { Badge } from "../components/ui/badge"
-import { Separator } from "../components/ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
+import { Avatar, AvatarFallback, AvatarImage } from "../Components/ui/avatar"
+import { Badge } from "../Components/ui/badge"
+import { Separator } from "../Components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../Components/ui/tabs"
 
 export const UserDashboard = () => {
   const state = useSelector((state) => state.user)

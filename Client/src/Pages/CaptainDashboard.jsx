@@ -7,7 +7,7 @@ import { motion } from "framer-motion"
 import { toast } from "sonner"
 import { AddRide, GetRides, RideDelelte, UpdateRide } from "../Api/Ride_Api"
 import { MapPin, Clock, Calendar, Plus, Pencil, DollarSign, BarChart3, Car, Trash } from "lucide-react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../Components/ui/table"
 import {
   Dialog,
   DialogContent,
@@ -15,15 +15,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "../components/ui/dialog"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
+} from "../Components/ui/dialog"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../Components/ui/card"
 import { Button } from "../Components/ui/button"
-import { Input } from "../components/ui/input"
-import { Label } from "../components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select"
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
-import { Badge } from "../components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
+import { Input } from "../Components/ui/input"
+import { Label } from "../Components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../Components/ui/select"
+import { Avatar, AvatarFallback, AvatarImage } from "../Components/ui/avatar"
+import { Badge } from "../Components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../Components/ui/tabs"
 
 export const CaptainDashboard = () => {
   const captain = useSelector((state) => state.user.user)
