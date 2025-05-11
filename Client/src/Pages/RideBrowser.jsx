@@ -19,7 +19,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu"
+} from "../Components/ui/dropdown-menu"
 import { Link, useNavigate } from "react-router-dom"
 
 export const RideBrowser = () => {
@@ -301,9 +301,6 @@ export const RideBrowser = () => {
                   </div>
                   <Separator className="my-4 bg-white/20" />
                   <div className="flex justify-between items-center">
-                    <Button variant="secondary" size="sm" className="bg-white/20 hover:bg-white/30 backdrop-blur-sm">
-                      Add Money
-                    </Button>
                   </div>
                 </CardContent>
               </Card>
