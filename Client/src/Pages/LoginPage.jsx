@@ -1,27 +1,25 @@
 import React, { useEffect } from "react";
 import loginbg from "../assets/signin.png";
-import { Button, Input } from "antd";
 import { useForm } from "react-hook-form";
 import { userLogin } from "../Api/Auth_Api";
-import { Modal } from "antd";
-import { useSelector,useDispatch } from "react-redux";
-import { redirect, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 export const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const { register, handleSubmit, reset } = useForm();
-  const LoginUser = async(data) =>{
+  const LoginUser = async (data) => {
     const res = await userLogin(data, dispatch);
-    if(res){
+    if (res) {
       navigate('/')
     }
   }
-  useEffect(()=>{
-    if(!user.loading && user.user != null){
+  useEffect(() => {
+    if (!user.loading && user.user != null) {
       navigate('/')
     }
-  },[user])
+  }, [user])
   return (
     <div className="min-h-screen flex items-center justify-center w-full bg-blue-100">
       <div className="login-container md:w-[40%] w-full py-12  px-10 rounded-4xl">

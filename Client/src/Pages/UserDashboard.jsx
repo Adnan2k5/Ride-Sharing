@@ -1,25 +1,40 @@
+"use client"
+
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import { toast } from "sonner"
 import { CreditCard, Clock, CalendarClock, ChevronRight, MapPin, MoveRight, Car, History, Calendar } from "lucide-react"
-import { fetchBookings, fetchRides } from "../Api/Ride_Api"
+import { fetchBookings } from "../Api/Ride_Api"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "../Components/ui/card"
 import { Button } from "../Components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
-import { Badge } from "../components/ui/badge"
-import { Separator } from "../components/ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
+import { Avatar, AvatarFallback, AvatarImage } from "../Components/ui/avatar"
+import { Badge } from "../Components/ui/badge"
+import { Separator } from "../Components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../Components/ui/tabs"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "../Components/ui/dialog"
+import { Label } from "../Components/ui/label"
+import { Input } from "../Components/ui/input"
 
 export const UserDashboard = () => {
   const state = useSelector((state) => state.user)
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
   const [pastRides, setPastRides] = useState([])
-  const [futureRides, setFutureRides] = useState([]);
-  const [user, setuser] = useState();
+  const [futureRides, setFutureRides] = useState([])
+  const [user, setuser] = useState()
   const [balance, setBalance] = useState(3000) // Mock balance - would come from API in real app
+  const [addMoneyOpen, setAddMoneyOpen] = useState(false)
+  const [amount, setAmount] = useState("")
+  const [isProcessing, setIsProcessing] = useState(false)
 
   useEffect(() => {
     if (state.loading === false && state.user == null) {
@@ -30,21 +45,14 @@ export const UserDashboard = () => {
     loadRides()
   }, [state, navigate])
 
-
-
-
-
   const loadRides = async () => {
     setIsLoading(true)
     if (state.user !== null) {
       try {
         const allRides = await fetchBookings()
 
-
         // Filter rides for this user
-        const userRides = Array.isArray(allRides)
-          ? allRides.filter((ride) => ride.bookedBy === state.user?.id)
-          : []
+        const userRides = Array.isArray(allRides) ? allRides.filter((ride) => ride.bookedBy === state.user?.id) : []
 
         console.log(userRides)
 
@@ -104,6 +112,26 @@ export const UserDashboard = () => {
 
   const formattedPastRides = formatRideData(pastRides)
   const formattedFutureRides = formatRideData(futureRides)
+
+  const handleAddMoney = () => {
+    if (!amount || isNaN(amount) || Number(amount) <= 0) {
+      toast.error("Please enter a valid amount")
+      return
+    }
+
+    setIsProcessing(true)
+
+    // Simulate API call
+    setTimeout(() => {
+      setBalance((prev) => prev + Number(amount))
+      setIsProcessing(false)
+      setAddMoneyOpen(false)
+      setAmount("")
+      toast.success(`$${amount} added to your wallet`, {
+        description: `Your new balance is $${(balance + Number(amount)).toFixed(2)}`,
+      })
+    }, 1500)
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -205,12 +233,6 @@ export const UserDashboard = () => {
                 </div>
                 <Separator className="my-4 bg-white/20" />
                 <div className="flex justify-between items-center mt-auto">
-                  <Button variant="secondary" size="sm" className="bg-white/20 hover:bg-white/30 backdrop-blur-sm">
-                    Add Money
-                  </Button>
-                  <Button variant="secondary" size="sm" className="bg-white/20 hover:bg-white/30 backdrop-blur-sm">
-                    View History
-                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -388,6 +410,52 @@ export const UserDashboard = () => {
           </Tabs>
         </motion.div>
       </div>
+      <Dialog open={addMoneyOpen} onOpenChange={setAddMoneyOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Add Money to Wallet</DialogTitle>
+            <DialogDescription>Enter the amount you want to add to your wallet.</DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="amount" className="text-right">
+                Amount
+              </Label>
+              <div className="col-span-3 relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">$</span>
+                <Input
+                  id="amount"
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  className="pl-8"
+                  placeholder="0.00"
+                  min="1"
+                />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAddMoneyOpen(false)}>
+              Cancel
+            </Button>
+            <Button
+              onClick={handleAddMoney}
+              disabled={isProcessing}
+              className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+            >
+              {isProcessing ? (
+                <>
+                  <span className="animate-spin mr-2">⟳</span>
+                  Processing...
+                </>
+              ) : (
+                "Add Money"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

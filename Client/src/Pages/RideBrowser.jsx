@@ -7,11 +7,11 @@ import { motion } from "framer-motion"
 import { bookRide, fetchRides } from "../Api/Ride_Api"
 import { toast } from "sonner"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "../Components/ui/card"
-import { Button } from "../components/ui/button"
-import { Input } from "../components/ui/input"
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
-import { Badge } from "../components/ui/badge"
-import { Separator } from "../components/ui/separator"
+import { Button } from "../Components/ui/button"
+import { Input } from "../Components/ui/input"
+import { Avatar, AvatarFallback, AvatarImage } from "../Components/ui/avatar"
+import { Badge } from "../Components/ui/badge"
+import { Separator } from "../Components/ui/separator"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +19,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu"
+} from "../Components/ui/dropdown-menu"
 import { Link, useNavigate } from "react-router-dom"
 
 export const RideBrowser = () => {
@@ -301,9 +301,6 @@ export const RideBrowser = () => {
                   </div>
                   <Separator className="my-4 bg-white/20" />
                   <div className="flex justify-between items-center">
-                    <Button variant="secondary" size="sm" className="bg-white/20 hover:bg-white/30 backdrop-blur-sm">
-                      Add Money
-                    </Button>
                   </div>
                 </CardContent>
               </Card>

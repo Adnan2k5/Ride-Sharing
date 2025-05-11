@@ -1,13 +1,13 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { useForm } from "react-hook-form"
 import { useSelector } from "react-redux"
 import { motion } from "framer-motion"
 import { toast } from "sonner"
 import { AddRide, GetRides, RideDelelte, UpdateRide } from "../Api/Ride_Api"
-import { MapPin, Clock, Calendar, Plus, Pencil, DollarSign, BarChart3, Car, Trash } from "lucide-react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table"
+import { MapPin, Clock, Calendar, Plus, Pencil, DollarSign, BarChart3, Car, Trash } from 'lucide-react'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../Components/ui/table"
 import {
   Dialog,
   DialogContent,
@@ -15,15 +15,29 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "../components/ui/dialog"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
-import { Button } from "../components/ui/button"
-import { Input } from "../components/ui/input"
-import { Label } from "../components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select"
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
-import { Badge } from "../components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
+} from "../Components/ui/dialog"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../Components/ui/card"
+import { Button } from "../Components/ui/button"
+import { Input } from "../Components/ui/input"
+import { Label } from "../Components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../Components/ui/select"
+import { Avatar, AvatarFallback, AvatarImage } from "../Components/ui/avatar"
+import { Badge } from "../Components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../Components/ui/tabs"
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+
+const mapContainerStyle = {
+  width: '100%',
+  height: '400px',
+  borderRadius: '0.75rem',
+};
+
+const center = {
+  lat: 16.4405405,
+  lng: 80.6217481,
+};
+
+const libraries = ['places'];
 
 export const CaptainDashboard = () => {
   const captain = useSelector((state) => state.user.user)
@@ -38,6 +52,32 @@ export const CaptainDashboard = () => {
     reset,
     formState: { errors },
   } = useForm()
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: "AIzaSyBNLrJhOMz6idD05pzwk_ONj13r6Fvq5YY",
+    libraries,
+  });
+
+  const [map, setMap] = useState(null);
+  const [markers, setMarkers] = useState([
+    { lat: 16.4405405, lng: 80.6217481, label: "KL University" },
+  ]);
+
+  const onMapLoad = useCallback((map) => {
+    setMap(map);
+  }, []);
+
+  const onMapClick = useCallback((event) => {
+    setMarkers([
+      ...markers,
+      {
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng(),
+        label: "Selected Location",
+      },
+    ]);
+  }, [markers]);
 
   let profit = 0
   if (rides?.length !== 0 && rides !== "No rides found") {
@@ -163,13 +203,12 @@ export const CaptainDashboard = () => {
 
   const deleteRide = async (id) => {
     try {
-      const res = await RideDelelte(id);
+      const res = await RideDelelte(id)
       if (res) {
         toast.success("Ride deleted successfully")
         getRides()
       }
-    }
-    catch (error) {
+    } catch (error) {
       toast.error("Failed to delete ride")
     }
   }
@@ -320,7 +359,7 @@ export const CaptainDashboard = () => {
                                 className="flex items-center gap-1"
                                 onClick={() => {
                                   if (confirm("Are you sure you want to delete this ride?")) {
-                                    deleteRide(ride.key);
+                                    deleteRide(ride.key)
                                   }
                                 }}
                               >
@@ -443,6 +482,30 @@ export const CaptainDashboard = () => {
                     Add Ride
                   </Button>
                 </form>
+                <div className="mt-6">
+                  <h3 className="text-lg font-medium mb-4">Select Location on Map</h3>
+                  {isLoaded ? (
+                    <GoogleMap
+                      mapContainerStyle={mapContainerStyle}
+                      center={center}
+                      zoom={14}
+                      onClick={onMapClick}
+                      onLoad={onMapLoad}
+                    >
+                      {markers.map((marker, index) => (
+                        <Marker
+                          key={index}
+                          position={{ lat: marker.lat, lng: marker.lng }}
+                          label={marker.label}
+                        />
+                      ))}
+                    </GoogleMap>
+                  ) : (
+                    <div className="h-[400px] bg-slate-100 rounded-xl flex items-center justify-center">
+                      <p>Loading Map...</p>
+                    </div>
+                  )}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -518,4 +581,3 @@ export const CaptainDashboard = () => {
     </div>
   )
 }
-
