@@ -10,7 +10,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @SpringBootApplication
-@CrossOrigin(origins = "https://ride-sharing-seven.vercel.app/")
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 public class EmsServerApplication {
 
@@ -20,7 +20,7 @@ public class EmsServerApplication {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("https://ride-sharing-seven.vercel.app/");
+        config.addAllowedOrigin("http://localhost:5173");
         config.addAllowedHeader("*");
         config.addAllowedMethod("GET");
         config.addAllowedMethod("POST");
