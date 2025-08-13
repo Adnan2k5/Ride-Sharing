@@ -19,6 +19,8 @@
     <properties>
         <java.version>21</java.version>
     </properties>
+    
+    <packaging>war</packaging>
 
     <dependencies>
         <!-- Spring Boot Web -->
@@ -50,6 +52,8 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
         </dependency>
+
+        
 
         <!-- Jakarta Servlet API -->
         <dependency>
