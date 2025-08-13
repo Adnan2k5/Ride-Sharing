@@ -23,7 +23,7 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename='/ride-sharing'>
         <Toaster />
         <Routes>
           <Route path='/login' element={<LoginPage />} />
